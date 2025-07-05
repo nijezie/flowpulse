@@ -1,34 +1,45 @@
-# 🌊 FlowPulse Dashboard
+# 🌊 FlowPulse - Live Stablecoin Flow Dashboard
 
-## 🚀 **LIVE DEPLOYMENT**
+## 🚀 **NOW LIVE!**
 
 FlowPulse is a real-time stablecoin flow monitoring dashboard with integrated betting functionality.
 
-### ✅ **Features:**
-- **Interactive Heatmap** - Visual flow matrix between chains
-- **Real-time Feed** - Live transaction narratives  
-- **Time-series Charts** - Historical flow analysis
-- **Alert System** - Configurable flow notifications
-- **Betting Interface** - Predict flow directions with dynamic odds
-- **Mobile Responsive** - Works on all devices
+### ✅ **Live Features:**
+- **🔥 Interactive Heatmap** - Click cells to explore cross-chain flows
+- **📊 Real-time Charts** - Dynamic flow visualization with Recharts
+- **📱 Live Feed** - Real-time transaction narratives that update every 5 seconds
+- **🎲 Betting Interface** - Place bets on flow directions with live odds
+- **📱 Mobile Responsive** - Perfect experience on all devices
+- **⚡ Fast Performance** - Optimized Next.js 14 with TypeScript
 
 ### 🎯 **How to Use:**
-1. Click heatmap cells to explore specific flows
-2. View real-time transaction feed
-3. Analyze trends with interactive charts
-4. Set up alerts for flow thresholds
-5. Place bets on flow predictions
+1. **Explore the Heatmap** - Click any cell to see detailed flows between chains
+2. **Monitor Live Feed** - Watch real-time transaction updates
+3. **Analyze Trends** - Select flows to view 24-hour historical charts
+4. **Place Bets** - Predict flow directions with dynamic odds (2.1x inflow, 1.8x outflow)
 
 ### 🔧 **Tech Stack:**
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS
-- **Charts**: Recharts
+- **Charts**: Recharts with custom gradients
 - **Icons**: Lucide React
-- **Deployment**: Vercel
+- **Deployment**: Vercel (optimized)
 
-### 📱 **Responsive Design:**
-Optimized for desktop, tablet, and mobile devices.
+### 📱 **Fully Responsive:**
+- ✅ Desktop (1920px+)
+- ✅ Laptop (1024px+)  
+- ✅ Tablet (768px+)
+- ✅ Mobile (320px+)
+
+### 🎨 **Design Features:**
+- Dark theme optimized for crypto trading
+- Green/red color coding for inflows/outflows
+- Smooth hover animations and transitions
+- Professional dashboard layout
+- Real-time data updates every 5 seconds
 
 ---
 
-**Ready to monitor stablecoin flows in real-time!** 🚀
+**🚀 Ready to deploy to Vercel!** 
+
+Simply push to GitHub and connect to Vercel for instant deployment.
