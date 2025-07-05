@@ -1,10 +1,23 @@
 const express = require("express")
-const { pool } = require("../config/database")
-
 const router = express.Router()
+
+let pool
+try {
+  const database = require("../config/database")
+  pool = database.pool
+} catch (error) {
+  console.error("Error loading database:", error)
+}
 
 // GET /api/flows - Get recent stablecoin flows
 router.get("/", async (req, res) => {
+  if (!pool) {
+    return res.status(500).json({
+      success: false,
+      error: "Database not available",
+    })
+  }
+
   try {
     const { interval = "1m", limit = 100 } = req.query
 
@@ -43,6 +56,13 @@ router.get("/", async (req, res) => {
 
 // GET /api/flows/heatmap - Get heatmap data
 router.get("/heatmap", async (req, res) => {
+  if (!pool) {
+    return res.status(500).json({
+      success: false,
+      error: "Database not available",
+    })
+  }
+
   try {
     const result = await pool.query(`
       SELECT 
@@ -73,6 +93,13 @@ router.get("/heatmap", async (req, res) => {
 
 // GET /api/flows/timeseries - Get time series data for charts
 router.get("/timeseries", async (req, res) => {
+  if (!pool) {
+    return res.status(500).json({
+      success: false,
+      error: "Database not available",
+    })
+  }
+
   try {
     const { chain_from, chain_to, hours = 24 } = req.query
 
@@ -91,7 +118,7 @@ router.get("/timeseries", async (req, res) => {
         COUNT(*) as transaction_count
       FROM flows 
       WHERE chain_from = $1 AND chain_to = $2
-      AND timestamp > NOW() - INTERVAL '${hours} hours'
+      AND timestamp > NOW() - INTERVAL '${Number.parseInt(hours)} hours'
       GROUP BY time_bucket
       ORDER BY time_bucket
     `,

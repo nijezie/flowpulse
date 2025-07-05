@@ -21,17 +21,14 @@
     "server": "cd server && npm start"
   },
   "dependencies": {
-    "bufferutil": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cors": "latest",
     "dotenv": "latest",
     "express": "latest",
     "express-rate-limit": "latest",
-    "http": "latest",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
-    "node-cron": "latest",
     "path": "latest",
     "pg": "latest",
     "pg-native": "latest",
@@ -39,9 +36,7 @@
     "react-dom": "^19",
     "recharts": "latest",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7",
-    "utf-8-validate": "latest",
-    "ws": "latest"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^22",
