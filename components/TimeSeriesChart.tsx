@@ -3,8 +3,12 @@
 import { useState, useEffect } from "react"
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts"
 
-const TimeSeriesChart = ({ selectedFlow }) => {
-  const [chartData, setChartData] = useState([])
+interface TimeSeriesChartProps {
+  selectedFlow: any
+}
+
+const TimeSeriesChart = ({ selectedFlow }: TimeSeriesChartProps) => {
+  const [chartData, setChartData] = useState<any[]>([])
   const [timeRange, setTimeRange] = useState("24")
 
   useEffect(() => {
@@ -34,13 +38,13 @@ const TimeSeriesChart = ({ selectedFlow }) => {
     }
   }, [selectedFlow, timeRange])
 
-  const formatAmount = (value) => {
+  const formatAmount = (value: number) => {
     if (Math.abs(value) >= 1000000) return `$${(value / 1000000).toFixed(1)}M`
     if (Math.abs(value) >= 1000) return `$${(value / 1000).toFixed(1)}K`
     return `$${value.toFixed(0)}`
   }
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (

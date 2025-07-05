@@ -3,7 +3,6 @@ import { NextResponse } from "next/server"
 const CHAINS = ["ethereum", "polygon", "arbitrum", "optimism", "solana", "bsc"]
 const STABLECOINS = ["USDC", "USDT", "DAI", "BUSD"]
 
-// Generate mock flow data
 function generateMockFlows() {
   const flows = []
   const now = new Date()

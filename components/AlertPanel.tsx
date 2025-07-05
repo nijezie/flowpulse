@@ -5,7 +5,12 @@ import { Plus, Trash2, ToggleLeft, ToggleRight, AlertTriangle } from "lucide-rea
 
 const CHAINS = ["ethereum", "polygon", "arbitrum", "optimism", "solana", "bsc"]
 
-const AlertPanel = ({ alerts, onAlertsChange }) => {
+interface AlertPanelProps {
+  alerts: any[]
+  onAlertsChange: () => void
+}
+
+const AlertPanel = ({ alerts, onAlertsChange }: AlertPanelProps) => {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [newAlert, setNewAlert] = useState({
     chain_from: "",
@@ -14,13 +19,13 @@ const AlertPanel = ({ alerts, onAlertsChange }) => {
     alert_type: "inflow",
   })
 
-  const formatAmount = (amount) => {
+  const formatAmount = (amount: number) => {
     if (amount >= 1000000) return `$${(amount / 1000000).toFixed(1)}M`
     if (amount >= 1000) return `$${(amount / 1000).toFixed(1)}K`
     return `$${amount.toFixed(0)}`
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString()
   }
 

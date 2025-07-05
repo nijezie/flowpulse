@@ -12,27 +12,32 @@ interface HeatmapGridProps {
 const HeatmapGrid = ({ onFlowSelect }: HeatmapGridProps) => {
   const [selectedInterval, setSelectedInterval] = useState("1m")
   const [heatmapData, setHeatmapData] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchHeatmapData()
-    const interval = setInterval(fetchHeatmapData, 30000)
-    return () => clearInterval(interval)
-  }, [])
+    // Generate mock heatmap data
+    const data: any[] = []
+    CHAINS.forEach((chainFrom) => {
+      CHAINS.forEach((chainTo) => {
+        if (chainFrom !== chainTo) {
+          INTERVALS.forEach((interval) => {
+            const seed = chainFrom.charCodeAt(0) + chainTo.charCodeAt(0)
+            const baseAmount = Math.sin(seed) * 2000000
+            const variation = (Math.random() - 0.5) * 1000000
+            const amount = baseAmount + variation
 
-  const fetchHeatmapData = async () => {
-    try {
-      const response = await fetch("/api/flows/heatmap")
-      const data = await response.json()
-      if (data.success) {
-        setHeatmapData(data.data)
-      }
-      setLoading(false)
-    } catch (error) {
-      console.error("Error fetching heatmap data:", error)
-      setLoading(false)
-    }
-  }
+            data.push({
+              chain_from: chainFrom,
+              chain_to: chainTo,
+              interval_type: interval,
+              net_amount: Math.round(amount),
+              transaction_count: Math.floor(Math.random() * 15) + 1,
+            })
+          })
+        }
+      })
+    })
+    setHeatmapData(data)
+  }, [])
 
   const getFlowValue = (chainFrom: string, chainTo: string, interval: string) => {
     const flow = heatmapData.find(
@@ -62,10 +67,6 @@ const HeatmapGrid = ({ onFlowSelect }: HeatmapGridProps) => {
       net_amount: value,
       interval_type: selectedInterval,
     })
-  }
-
-  if (loading) {
-    return <div className="flex items-center justify-center h-64 text-gray-400">Loading heatmap data...</div>
   }
 
   return (

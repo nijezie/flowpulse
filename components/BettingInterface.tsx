@@ -5,11 +5,15 @@ import { TrendingUp, TrendingDown, DollarSign } from "lucide-react"
 
 const PRESET_AMOUNTS = [10, 50, 100, 500]
 
-const BettingInterface = ({ selectedFlow }) => {
+interface BettingInterfaceProps {
+  selectedFlow: any
+}
+
+const BettingInterface = ({ selectedFlow }: BettingInterfaceProps) => {
   const [betAmount, setBetAmount] = useState(10)
   const [betDirection, setBetDirection] = useState("inflow")
   const [odds, setOdds] = useState({ inflow_odds: 2.0, outflow_odds: 2.0 })
-  const [userBets, setUserBets] = useState([])
+  const [userBets, setUserBets] = useState<any[]>([])
 
   useEffect(() => {
     // Mock odds calculation
@@ -56,11 +60,11 @@ const BettingInterface = ({ selectedFlow }) => {
     return betAmount * getCurrentOdds()
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString()
   }
 
-  const getBetStatusColor = (status) => {
+  const getBetStatusColor = (status: string) => {
     switch (status) {
       case "won":
         return "text-green-400"
