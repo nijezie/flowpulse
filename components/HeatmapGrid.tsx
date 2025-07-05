@@ -1,21 +1,47 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const CHAINS = ["ethereum", "polygon", "arbitrum", "optimism", "solana", "bsc"]
 const INTERVALS = ["1m", "5m", "15m"]
 
-const HeatmapGrid = ({ onFlowSelect }) => {
-  const [selectedInterval, setSelectedInterval] = useState("1m")
+interface HeatmapGridProps {
+  onFlowSelect: (flow: any) => void
+}
 
-  // Mock heatmap data
-  const getFlowValue = (chainFrom, chainTo) => {
-    if (chainFrom === chainTo) return 0
-    const seed = chainFrom.charCodeAt(0) + chainTo.charCodeAt(0)
-    return Math.sin(seed) * 2000000 + (Math.random() - 0.5) * 500000
+const HeatmapGrid = ({ onFlowSelect }: HeatmapGridProps) => {
+  const [selectedInterval, setSelectedInterval] = useState("1m")
+  const [heatmapData, setHeatmapData] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchHeatmapData()
+    const interval = setInterval(fetchHeatmapData, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const fetchHeatmapData = async () => {
+    try {
+      const response = await fetch("/api/flows/heatmap")
+      const data = await response.json()
+      if (data.success) {
+        setHeatmapData(data.data)
+      }
+      setLoading(false)
+    } catch (error) {
+      console.error("Error fetching heatmap data:", error)
+      setLoading(false)
+    }
   }
 
-  const getIntensityClass = (value) => {
+  const getFlowValue = (chainFrom: string, chainTo: string, interval: string) => {
+    const flow = heatmapData.find(
+      (f) => f.chain_from === chainFrom && f.chain_to === chainTo && f.interval_type === interval,
+    )
+    return flow ? Number.parseFloat(flow.net_amount) : 0
+  }
+
+  const getIntensityClass = (value: number) => {
     const absValue = Math.abs(value)
     if (absValue === 0) return "bg-gray-700 text-gray-400"
     if (absValue < 100000) return value > 0 ? "bg-green-900 text-green-300" : "bg-red-900 text-red-300"
@@ -23,19 +49,23 @@ const HeatmapGrid = ({ onFlowSelect }) => {
     return value > 0 ? "bg-green-500 text-black" : "bg-red-500 text-white"
   }
 
-  const formatValue = (value) => {
+  const formatValue = (value: number) => {
     if (Math.abs(value) >= 1000000) return `${(value / 1000000).toFixed(1)}M`
     if (Math.abs(value) >= 1000) return `${(value / 1000).toFixed(1)}K`
     return value.toFixed(0)
   }
 
-  const handleCellClick = (chainFrom, chainTo, value) => {
+  const handleCellClick = (chainFrom: string, chainTo: string, value: number) => {
     onFlowSelect({
       chain_from: chainFrom,
       chain_to: chainTo,
       net_amount: value,
       interval_type: selectedInterval,
     })
+  }
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-64 text-gray-400">Loading heatmap data...</div>
   }
 
   return (
@@ -78,7 +108,7 @@ const HeatmapGrid = ({ onFlowSelect }) => {
                     )
                   }
 
-                  const value = getFlowValue(chainFrom, chainTo)
+                  const value = getFlowValue(chainFrom, chainTo, selectedInterval)
                   const intensityClass = getIntensityClass(value)
 
                   return (

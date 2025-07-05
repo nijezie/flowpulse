@@ -3,8 +3,13 @@
 import { useState, useEffect } from "react"
 import { ArrowRight, TrendingUp, TrendingDown } from "lucide-react"
 
-const NarrativeFeed = ({ flows, onFlowSelect }) => {
-  const [feedItems, setFeedItems] = useState([])
+interface NarrativeFeedProps {
+  flows: any[]
+  onFlowSelect: (flow: any) => void
+}
+
+const NarrativeFeed = ({ flows, onFlowSelect }: NarrativeFeedProps) => {
+  const [feedItems, setFeedItems] = useState<any[]>([])
 
   useEffect(() => {
     const narrativeItems = flows.map((flow, index) => ({
@@ -21,23 +26,23 @@ const NarrativeFeed = ({ flows, onFlowSelect }) => {
     setFeedItems(narrativeItems.slice(0, 10))
   }, [flows])
 
-  const formatAmount = (amount) => {
+  const formatAmount = (amount: number) => {
     const absAmount = Math.abs(amount)
     if (absAmount >= 1000000) return `$${(absAmount / 1000000).toFixed(2)}M`
     if (absAmount >= 1000) return `$${(absAmount / 1000).toFixed(1)}K`
     return `$${absAmount.toFixed(0)}`
   }
 
-  const formatTimeAgo = (timestamp) => {
+  const formatTimeAgo = (timestamp: Date) => {
     const now = new Date()
-    const diff = now - timestamp
+    const diff = now.getTime() - timestamp.getTime()
     const minutes = Math.floor(diff / 60000)
     if (minutes < 1) return "Just now"
     if (minutes < 60) return `${minutes}m ago`
     return `${Math.floor(minutes / 60)}h ago`
   }
 
-  const generateNarrative = (item) => {
+  const generateNarrative = (item: any) => {
     const direction = item.type === "inflow" ? "flowed into" : "flowed out of"
     const chainFrom = item.chain_from.charAt(0).toUpperCase() + item.chain_from.slice(1)
     const chainTo = item.chain_to.charAt(0).toUpperCase() + item.chain_to.slice(1)
